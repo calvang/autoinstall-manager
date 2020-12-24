@@ -1,3 +1,12 @@
+/*
+ * @author Calvin Huang, 2020
+ * 
+ * This file is part of Autoinstall Manager.
+ *
+ * See the LICENSE file at the top-level directory of this distribution
+ * for details of code ownership.
+ */
+
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -110,5 +119,5 @@ void Driver::print_utils(){
  * running the driver.
  */
 void Driver::print_statuses(){
-    
+
 }
