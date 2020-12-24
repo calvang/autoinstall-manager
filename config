@@ -1,0 +1,2 @@
+install_configs="~/.dotfiles/setup/INSTALL_CONFIGS.md"
+execution_dir="~/Downloads"
