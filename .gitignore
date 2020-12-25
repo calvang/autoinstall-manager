@@ -4,3 +4,4 @@ autoinstall-manager
 /DEBIAN
 /usr
 autoinstall-manager.deb
+*.deb

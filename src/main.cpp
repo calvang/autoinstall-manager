@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
     int win_width = int(win_dims.ws_col);
 
     // initialize and read in settings file
-    initialize_settings_file("tests/settings.conf", FSETTINGS, DSETTINGS);
+    initialize_settings_file("settings.conf", FSETTINGS, DSETTINGS);
     Settings settings(FSETTINGS, USER_HOME);
     if (opts['v']) settings.print(win_width);
 
