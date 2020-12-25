@@ -11,10 +11,12 @@
 #include <unordered_map>
 #include <vector>
 
-using std::cout;
+#include "TableProps.h"
+
 using std::string;
 using std::vector;
 using std::unordered_map;
+
 
 class Driver {
     public:
@@ -24,18 +26,12 @@ class Driver {
         void print_utils();
         void print_statuses(); 
     private:
-        void adjust_print_cols(string& col, size_t col_width){
-            if (col.length() < col_width) // pad with spaces
-                col.append(col_width - col.length(), ' ');
-            else
-                col = col.substr(0, col_width);
-        }
         struct Utility {
+            Utility(string name, string type, string cmd);
+            bool exec(string exec_dir);
             string name;
             string type;
             string cmd; // command to install utility
-            Utility(string name, string type, string cmd) 
-                : name(name), type(type), cmd(cmd){} 
         };
         vector<Utility*> util_queue; // utils to prepare/install
         vector<string> excluded; // utils in config to exclude

@@ -2,7 +2,19 @@
 
 Command-line utility to set up a Unix/Linux native system and automatically create symlinks and install programs. Autoinstall-Manager allows users to define installation tasks within a unified Markdown file for ease of use.
 
-![table](assets/table.png)
+![table](assets/table2.png)
+
+## Table of Contents
+- [Autoinstall Manager](#autoinstall-manager)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [Setting up Configuration Files](#setting-up-configuration-files)
+    - [Running](#running)
+      - [Preparation](#preparation)
+      - [Installation](#installation-1)
+      - [Status Reports](#status-reports)
+
 
 ## Installation
 
@@ -22,9 +34,18 @@ sudo make uninstall
 
 ## Usage
 
+```bash
+Usage: autoinstall [OPTIONS]
+Default: -vpi
+	-h: Access help menu
+	-v: Output in verbose mode.
+	-p: Prepare system by setting up directories and symlinks
+	-i: Install utilities and programs to system
+```
+
 Before running this utility, you will need create configuration files for the preparation and installation processes and change the settings at `~/.config/autoinstall-manager/settings.conf` to match the paths to your configuration files. 
 
-### Setting up Configuration Files
+### Creating Configuration Files
 
 The main purpose for this utility is to store all program installation commands and file system configurations within files that can be directly transfered onto a new operating system. For this reason, it complements a dotfile system very well.
 
@@ -33,11 +54,11 @@ Both configuration are Github-style Markdown files with the following format:
 <pre>
 # title
 ## type 1
-- [x] program to install
+- [x] name of program to install
 ```
 shell commands to install program
 ```
-- [ ] program to ignore for this run
+- [ ] name of program to ignore for this run
 ```
 shell commands to install program
 ```
@@ -46,6 +67,12 @@ shell commands to install program
 </pre>
 
 It is important to keep in mind that the configuration files are read from top to bottom, and are executed in the same order.
+
+Bullet points and paragraphs can be included for each program, as the utility will ignore irrelevant formatting.
+
+### Managing Settings
+
+The `settings.conf` file contains the paths to your configuration files and the directories in which to execute each stage of the utility. This settings file will be located in `~/.config/autoinstall-manager` and should be edited to fit your specific system setup.
 
 ### Running
 
