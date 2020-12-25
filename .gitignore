@@ -1,3 +1,6 @@
-src/autoinstall-manager
+autoinstall-manager
 .vscode
 /tests
+/DEBIAN
+/usr
+autoinstall-manager.deb

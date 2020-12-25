@@ -32,19 +32,21 @@ Driver::Utility::Utility(string name, string type, string cmd)
  * Execute utility's associated shell commands from a given dir
  */
 bool Driver::Utility::exec(string exec_dir){
-    char buff[128];
+    char buff[1024]; // vuln to shell inj, but there is little point
     string script =  "cd " + exec_dir + "\n" + cmd;
     string res = "";
-    cout << "CMD: " << script << "\n";
+    // for licensing reasons, pstream is not used
     FILE *pipe = popen(script.c_str(), "r");
     if (!pipe) return false;
     while (!feof(pipe)) {
-        if (fgets(buff, 128, pipe) != NULL)
+        if (fgets(buff, 1024, pipe))
             res += buff;
     }
-    pclose(pipe);
-    cout << "RESULT: " << res << "\n";
-    return true;
+    int exit_code = pclose(pipe)/256; // return val is top 8 bits
+    cout << res << "\n";
+    // cout << "EXIT_CODE: " << exit_code << "\n";
+    if (exit_code != 0) return false;
+    else return true;
 }
 
 /**

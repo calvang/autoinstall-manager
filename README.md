@@ -10,6 +10,7 @@ Command-line utility to set up a Unix/Linux native system and automatically crea
   - [Installation](#installation)
   - [Usage](#usage)
     - [Setting up Configuration Files](#setting-up-configuration-files)
+    - [Managing Settings](#managing-settings)
     - [Running](#running)
       - [Preparation](#preparation)
       - [Installation](#installation-1)
@@ -18,6 +19,14 @@ Command-line utility to set up a Unix/Linux native system and automatically crea
 
 ## Installation
 
+The easiest option is to download the `.deb` file under `releases`. You can install this with one of the following commands:
+
+```bash
+sudo apt install autoinstall-manager-<version>.deb # Ubuntu 18.04+
+sudo dpkg -i autoinstall-manager-<version>.deb # Debian 9.0+
+```
+
+To build it from source, you must have C++17 or newer.
 To install, clone this repository and use the Makefile to build from source:
 
 ```bash

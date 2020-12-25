@@ -1,19 +1,24 @@
 all: install
 
-init:
-	@mkdir -p ~/.config/autoinstall-manager
-	@cp settings.conf ~/.config/autoinstall-manager
+# init:
+# 	@mkdir -p ~/.config/autoinstall-manager
+# 	@cp tests/settings.conf ~/.config/autoinstall-manager
 
 build:
-	@make init
-	@g++ src/main.cpp src/Driver.cpp src/TableProps.cpp -std=c++11 -Wall -Werror -Wextra -pedantic -O3 -DNDEBUG -o src/autoinstall-manager
+	@g++ src/main.cpp src/Driver.cpp src/Settings.cpp src/TableProps.cpp -std=c++11 -lboost_filesystem -lboost_system -Wall -Werror -Wextra -pedantic -O3 -DNDEBUG -o autoinstall-manager
 
 run:
-	@./src/autoinstall-manager
+	@./autoinstall-manager
 
 test:
 	@make -s build
 	@make -s run
+
+package:
+	@make -s build
+	@cp autoinstall-manager usr/bin
+	@cd ..; dpkg-deb --build autoinstall-manager; \
+		mv autoinstall-manager.deb autoinstall-manager
 
 clean:
 	@rm src/autoinstall-manager
@@ -21,7 +26,7 @@ clean:
 install:
 	@make init
 	@make build
-	@cp src/autoinstall-manager /usr/local/bin/
+	@cp autoinstall-manager /usr/local/bin/
 
 uninstall:
 	@make clean
