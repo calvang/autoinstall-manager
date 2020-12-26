@@ -22,8 +22,9 @@ using std::getline;
 using std::string;
 
 
-Driver::Driver(string dvr_configs, string ex_dir, string task, int width) : driver_configs(dvr_configs),
-    execution_dir(ex_dir), task_name(task), win_width(width){}
+Driver::Driver(string dvr_configs, string ex_dir, string task, int width,
+    std::ostream& out, bool save) : driver_configs(dvr_configs),
+    execution_dir(ex_dir), task_name(task), win_width(width), out(out), save(save){}
 
 Driver::Utility::Utility(string name, string type, string cmd) 
     : name(name), type(type), cmd(cmd){} 
@@ -31,7 +32,7 @@ Driver::Utility::Utility(string name, string type, string cmd)
 /**
  * Execute utility's associated shell commands from a given dir
  */
-bool Driver::Utility::exec(string exec_dir){
+bool Driver::Utility::exec(string exec_dir, std::ostream& out, bool save){
     char buff[1024]; // vuln to shell inj, but there is little point
     string script =  "cd " + exec_dir + "\n" + cmd;
     string res = "";
@@ -43,8 +44,8 @@ bool Driver::Utility::exec(string exec_dir){
             res += buff;
     }
     int exit_code = pclose(pipe)/256; // return val is top 8 bits
-    cout << res << "\n";
-    // cout << "EXIT_CODE: " << exit_code << "\n";
+    out << res << "\n";
+    if (save) cout << res << "\n"; // need additional cout
     if (exit_code != 0) return false;
     else return true;
 }
@@ -103,8 +104,9 @@ void Driver::parse_driver_configs(){
 
 void Driver::run(){
     for (size_t i = 0; i < util_queue.size(); ++i){
-        cout << "Running " << util_queue[i]->name << "...\n";
-        bool status = util_queue[i]->exec(execution_dir);
+        out << "Running " << util_queue[i]->name << "...\n";
+        if (save) cout << "Running " << util_queue[i]->name << "...\n";
+        bool status = util_queue[i]->exec(execution_dir, out, save);
         util_statuses[util_queue[i]->name] = status;
     }
 }
@@ -124,23 +126,25 @@ void Driver::print_utils(){
     ColumnCell blank(col_width);
     Header header(col_names, col_width, win_width, 2);
     
-    cout << "\n";
-    titlebar.print();
-    header.print();
+    out << "\n";
+    if (save) cout << "\n";
+    titlebar.print(out, save);
+    header.print(out, save);
     for (size_t i = 0; i < print_size; ++i){
         if (i < inc_size){
             ColumnCell right_col(util_queue[i]->name, col_width);
-            right_col.print(false); // no newline
+            right_col.print(out, save, false); // no newline
         }
-        else blank.print(false);
+        else blank.print(out, save, false);
         if (i < ex_size){
             ColumnCell left_col(excluded[i], col_width);
-            left_col.print();
+            left_col.print(out, save);
         }
-        else blank.print();
+        else blank.print(out, save);
     }
-    hline.print();
-    cout << "\n";
+    hline.print(out, save);
+    out << "\n";
+    if (save) cout << "\n";
 }
 
 /**
@@ -156,17 +160,19 @@ void Driver::print_statuses(){
     ColumnCell blank(col_width);
     Header header(col_names, col_width, win_width, 2);
 
-    cout << "\n";
-    titlebar.print();
-    header.print();
+    out << "\n";
+    if (save) cout << "\n";
+    titlebar.print(out, save);
+    header.print(out, save);
     for (size_t i = 0; i < util_queue.size(); ++i){
         string status = "Failure";
         ColumnCell right_col(util_queue[i]->name, col_width);
-        right_col.print(false); // no newline
+        right_col.print(out, save, false); // no newline
         if (util_statuses[util_queue[i]->name]) status = "Success";
         ColumnCell left_col(status, col_width);
-        left_col.print();
+        left_col.print(out, save);
     }
-    hline.print();
-    cout << "\n";
+    hline.print(out, save);
+    out << "\n";
+    if (save) cout << "\n";
 }

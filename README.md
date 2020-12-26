@@ -15,9 +15,18 @@ Command-line utility to set up a Unix/Linux native system and automatically crea
       - [Preparation](#preparation)
       - [Installation](#installation-1)
       - [Status Reports](#status-reports)
+  - [Tips for Configuration](#tips-for-configuration)
+    - [Ordering](#ordering)
+    - [Scripting](#scripting)
 
 
 ## Installation
+
+Before installation, you will need the C++ boost library installed. On Debian based systems, you can run the command:
+
+```bash
+sudo apt-get install libboost-all-dev
+```
 
 The easiest option is to download the `.deb` file under `releases`. You can install this with one of the following commands:
 
@@ -45,11 +54,13 @@ sudo make uninstall
 
 ```bash
 Usage: autoinstall [OPTIONS]
-Default: -vpi
-	-h: Access help menu
-	-v: Output in verbose mode.
-	-p: Prepare system by setting up directories and symlinks
-	-i: Install utilities and programs to system
+  -h,  --help       Access help menu
+  -v,  --verbose    Output in verbose mode
+  -s,  --save       Save output to "~/.config/autoinstall-manager/log.txt"
+  -p,  --prepare    Prepare system by setting up directories and symlinks
+  -i,  --install    Install utilities and programs to system
+  
+Default arguments are -vspi
 ```
 
 Before running this utility, you will need create configuration files for the preparation and installation processes and change the settings at `~/.config/autoinstall-manager/settings.conf` to match the paths to your configuration files. 
@@ -114,3 +125,18 @@ The installation stage is meant for automating the processing of downloading and
 #### Status Reports
 
 Status reports are enabled by default or via the verbose (`-v`) flag. The utility is designed to skip any script-generated errors, so this will allow you to observe whether any installations or processes failed.
+
+## Tips for Configuration
+
+### Ordering
+
+- Order the utilities in the configuration files in the order you wish to install them.
+- You may need to install core utilities such as git, curl, and wget before you run additional installations as those commands may be needed later.
+
+### Scripting
+
+- Make sure to use stable scripting commands, such as `apt-get` instead of `apt`, as they give more stable output.
+- Test your scripts individually before adding them to the configuration file. This utility does not perform any validation on scripts.
+- Make sure your scripts handle user input automatically. This means including the `-y` flag on some commands or running the utility as root to avoid repeated password prompts.
+
+One functionality you might need often is the ability to fetch binaries directly from a repository's latest Github release page. I have created a [python script](https://gist.github.com/calvang/c36ae007d899b62ac03766199a19ed5c) that implements this as a CLI utility. 

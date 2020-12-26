@@ -17,7 +17,7 @@ using std::vector;
 
 class TableProp {
     public:
-        virtual void print(bool newline=true);
+        virtual void print(std::ostream& out = std::cout, bool save = false, bool newline = true);
     protected:
         TableProp();
         TableProp(string input);
@@ -50,7 +50,7 @@ class Header: public TableProp {
     public:
         Header(string* col_names, size_t col_width, size_t width, int num_cols); // all col same width
         Header(string* col_names, size_t col_widths[], size_t width, int num_cols);
-        void print();
+        void print(std::ostream& out = std::cout, bool save = false);
     private:
         vector<ColumnCell*> col_headers;
         HLine hline;

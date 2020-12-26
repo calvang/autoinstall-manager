@@ -16,9 +16,15 @@ TableProp::TableProp() : output(""){}
 
 TableProp::TableProp(string input) : output(input){}
 
-void TableProp::print(bool newline){
-    if (newline) cout << output + "\n";
-    else cout << output;
+void TableProp::print(std::ostream& out, bool save, bool newline){
+    if (newline) {
+        out << output + "\n";
+        if (save) cout << output + "\n";
+    }
+    else {
+        out << output;
+        if (save) cout << output;
+    }
 }
 
 
@@ -70,12 +76,14 @@ Header::Header(string* col_names, size_t col_widths[], size_t width, int num_col
     }
 }
 
-void Header::print(){
-    hline.print();
+void Header::print(std::ostream& out, bool save){
+    hline.print(out, save);
     for (int i = 0; i < num_cols; ++i){
-        (*col_headers[i]).print(false);
+        (*col_headers[i]).print(out, save, false);
     }
-    hline.print();
+    out << "\n";
+    if (save) cout << "\n";
+    hline.print(out, save);
 }
 
 

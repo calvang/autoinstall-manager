@@ -8,6 +8,7 @@
  */
 
 #include <string>
+#include <iostream>
 #include <unordered_map>
 #include <vector>
 
@@ -20,7 +21,8 @@ using std::unordered_map;
 
 class Driver {
     public:
-        Driver(string dvr_configs, string ex_dir, string task, int width);
+        Driver(string dvr_configs, string ex_dir, string task, int width,
+            std::ostream& out = std::cout, bool save = false);
         void parse_driver_configs();
         void run();
         void print_utils();
@@ -28,7 +30,7 @@ class Driver {
     private:
         struct Utility {
             Utility(string name, string type, string cmd);
-            bool exec(string exec_dir);
+            bool exec(string exec_dir, std::ostream& out = std::cout, bool save = false);
             string name;
             string type;
             string cmd; // command to install utility
@@ -40,4 +42,6 @@ class Driver {
         string execution_dir; // directory to execute from
         string task_name; // title to output when printing (Prepare/Install)
         int win_width;
+        std::ostream& out;
+        bool save;
 };
