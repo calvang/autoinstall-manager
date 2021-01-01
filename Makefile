@@ -12,10 +12,7 @@ test:
 
 package:
 	@make -s build
-	@cp autoinstall-manager usr/bin
-	@cd ..; dpkg-deb --build autoinstall-manager; \
-		mv autoinstall-manager.deb autoinstall-manager
-
+	@./package.sh
 clean:
 	@rm autoinstall-manager
 

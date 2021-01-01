@@ -3,5 +3,6 @@ autoinstall-manager
 /tests
 /DEBIAN
 /usr
+/autoinstall-manager_*
 autoinstall-manager.deb
 *.deb
