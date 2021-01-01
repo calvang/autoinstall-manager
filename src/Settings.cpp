@@ -23,14 +23,22 @@ using std::cerr;
 using std::string;
 namespace fs = boost::filesystem;
 
+
+/**
+ * Creates .config/autoinstall-manager if
+ * it does not already exist.
+ */
+void initialize_config_dir(string dir){
+    fs::path dir_path(dir);
+    if (!fs::is_directory(dir_path))
+        fs::create_directory(dir_path);
+}
+
 /**
  * Creates .config/autoinstall-manager/settings.conf if
  * it does not already exist.
  */
-void initialize_settings_file(string file, string dir){
-    fs::path dir_path(dir);
-    if (!fs::is_directory(dir_path))
-        fs::create_directory(dir_path);
+void initialize_settings_file(string file){
     fs::path dst(file);
     if (!fs::exists(dst)) {
         std::ofstream outfile(file);
@@ -77,6 +85,9 @@ Settings::Settings(string file, string home) {
     }
 }
 
+/**
+ * Replaces aliases for the user home directory
+ */
 string Settings::insert_home_dir(string path, string home) {
     string new_path = path;
     if (path[0] == '~') new_path = home + path.substr(1);

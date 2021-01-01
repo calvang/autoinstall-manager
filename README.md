@@ -22,12 +22,6 @@ Command-line utility to set up a Unix/Linux native system and automatically crea
 
 ## Installation
 
-Before installation, you will need the C++ boost library installed. On Debian based systems, you can run the command:
-
-```bash
-sudo apt-get install libboost-all-dev
-```
-
 The easiest option is to download the `.deb` file under `releases`. You can install this with one of the following commands:
 
 ```bash
@@ -35,8 +29,14 @@ sudo apt install autoinstall-manager-<version>.deb # Ubuntu 18.04+
 sudo dpkg -i autoinstall-manager-<version>.deb # Debian 9.0+
 ```
 
-To build it from source, you must have C++9 or newer.
-To install, clone this repository and use the Makefile to build from source:
+To build it from source, you must have C++11 or newer.
+You will also need the C++ boost library installed. On Debian based systems, you can run the command:
+
+```bash
+sudo apt-get install libboost-all-dev
+```
+
+To install the build, clone this repository and use the Makefile to build from source:
 
 ```bash
 git clone https://github.com/calvang/autoinstall-manager.git

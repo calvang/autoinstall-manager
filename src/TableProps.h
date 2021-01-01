@@ -25,18 +25,27 @@ class TableProp {
 };
 
 
+/**
+ * Centered title for a table
+ */
 class TitleBar: public TableProp {
     public:
         TitleBar(string title, size_t width);
 };
 
 
+/**
+ * Horizontal line spanning the entire table
+ */
 class HLine: public TableProp {
     public:
         HLine(size_t width);
 };
 
 
+/**
+ * Single cell for a single column
+ */
 class ColumnCell: public TableProp {
     public:
         ColumnCell(size_t width); // empty cell
@@ -46,6 +55,9 @@ class ColumnCell: public TableProp {
 };
 
 
+/**
+ * Table header (i.e. the top row with column names)
+ */
 class Header: public TableProp {
     public:
         Header(string* col_names, size_t col_width, size_t width, int num_cols); // all col same width

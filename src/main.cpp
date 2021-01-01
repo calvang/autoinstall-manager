@@ -25,8 +25,9 @@ using std::cout;
 using std::cerr;
 using std::string;
 
-void run_manager(std::unordered_map<char, bool>& opts, string USER_HOME, string DSETTINGS,
-    string FSETTINGS, std::ostream& out, bool save);
+
+void run_manager(std::unordered_map<char, bool>& opts, string USER_HOME, string FSETTINGS,
+    std::ostream& out, bool save);
 
 void parse_opts(std::unordered_map<char, bool>& opts, int argc, char** argv);
 
@@ -38,15 +39,16 @@ int main(int argc, char** argv) {
     string DSETTINGS = USER_HOME + "/.config/autoinstall-manager"; // settings dir
     string FSETTINGS = USER_HOME + "/.config/autoinstall-manager/settings.conf";
 
+    initialize_config_dir(DSETTINGS); // initialize .config directory
+
     // initialize output stream for saving
     if (opts['s']) {
         string LOGFILE = USER_HOME + "/.config/autoinstall-manager/log.txt";
         std::ofstream out(LOGFILE);
-        out << "hi";
-        run_manager(opts, USER_HOME, DSETTINGS, FSETTINGS, out, true);
+        run_manager(opts, USER_HOME, FSETTINGS, out, true);
     } 
     else
-        run_manager(opts, USER_HOME, DSETTINGS, FSETTINGS, cout, false);
+        run_manager(opts, USER_HOME, FSETTINGS, cout, false);
 
     return 0;
 }
@@ -54,8 +56,8 @@ int main(int argc, char** argv) {
 /**
  * Run the utility with given options and an output stream.
  */
-void run_manager(std::unordered_map<char, bool>& opts, string USER_HOME, string DSETTINGS,
-    string FSETTINGS, std::ostream& out, bool save) {
+void run_manager(std::unordered_map<char, bool>& opts, string USER_HOME, string FSETTINGS, 
+    std::ostream& out, bool save) {
 
     // extract the terminal window dims
     struct winsize win_dims;
@@ -63,7 +65,7 @@ void run_manager(std::unordered_map<char, bool>& opts, string USER_HOME, string 
     int win_width = int(win_dims.ws_col);
 
     // initialize and read in settings file
-    initialize_settings_file(FSETTINGS, DSETTINGS);
+    initialize_settings_file(FSETTINGS);
     Settings settings(FSETTINGS, USER_HOME);
     if (opts['v']) settings.print(win_width, out, save);
 

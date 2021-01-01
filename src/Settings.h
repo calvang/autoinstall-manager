@@ -12,7 +12,9 @@
 using std::string;
 
 
-void initialize_settings_file(string file, string dir);
+void initialize_config_dir(string dir);
+
+void initialize_settings_file(string file);
 
 struct Settings {
     Settings(string file, string home);
